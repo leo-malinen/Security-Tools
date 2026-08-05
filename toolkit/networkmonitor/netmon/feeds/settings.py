@@ -1,0 +1,14 @@
+BOT_NAME = "netmon_feeds"
+SPIDER_MODULES = ["netmon.feeds.spiders"]
+NEWSPIDER_MODULE = "netmon.feeds.spiders"
+ROBOTSTXT_OBEY = True
+CONCURRENT_REQUESTS = 4
+DOWNLOAD_DELAY = 1.0
+DOWNLOAD_TIMEOUT = 30
+RETRY_TIMES = 2
+AUTOTHROTTLE_ENABLED = True
+USER_AGENT = "netmon-threatfeed/1.0"
+LOG_LEVEL = "INFO"
+ITEM_PIPELINES = {"netmon.feeds.pipelines.SqlitePipeline": 300}
+TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
+REQUEST_FINGERPRINTER_IMPLEMENTATION = "2.7"

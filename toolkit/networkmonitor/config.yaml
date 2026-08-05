@@ -1,0 +1,60 @@
+database: netmon.db
+
+capture:
+  interface: any
+  mode: sniff
+  log_file: /var/log/auth.log
+  poll_interval: 2
+
+detection:
+  port_scan:
+    window_seconds: 60
+    distinct_ports: 15
+  brute_force:
+    window_seconds: 300
+    failed_logins: 8
+    ports: [22, 23, 3389, 21, 3306, 5432]
+  traffic_spike:
+    window_seconds: 60
+    baseline_windows: 10
+    stddev_multiplier: 3.0
+    min_events: 50
+  suspicious_ip:
+    score_threshold: 50
+
+scoring:
+  port_scan: 40
+  brute_force: 50
+  traffic_spike: 20
+  blocklist_hit: 60
+  decay_hours: 24
+
+whitelist:
+  - 127.0.0.1
+  - 10.0.0.1
+
+alerts:
+  console: true
+  file: alerts.log
+  webhook_url: ""
+  email:
+    enabled: false
+    smtp_host: smtp.example.com
+    smtp_port: 587
+    username: alerts@example.com
+    password: changeme
+    sender: alerts@example.com
+    recipients:
+      - soc@example.com
+  min_severity: medium
+  cooldown_seconds: 300
+
+threat_feeds:
+  refresh_hours: 6
+  sources:
+    - https://lists.blocklist.de/lists/ssh.txt
+    - https://www.spamhaus.org/drop/drop.txt
+
+api:
+  host: 127.0.0.1
+  port: 8088

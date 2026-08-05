@@ -1,0 +1,116 @@
+{
+  "title": "Network Monitoring",
+  "uid": "netmon-main",
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "refresh": "30s",
+  "time": { "from": "now-6h", "to": "now" },
+  "panels": [
+    {
+      "type": "stat",
+      "title": "Alerts (last 24h)",
+      "gridPos": { "h": 5, "w": 6, "x": 0, "y": 0 },
+      "datasource": { "type": "frser-sqlite-datasource", "uid": "netmon-sqlite" },
+      "targets": [
+        {
+          "refId": "A",
+          "queryType": "table",
+          "rawQueryText": "SELECT COUNT(*) AS alerts FROM alerts WHERE ts >= strftime('%s','now') - 86400"
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "Suspicious IPs",
+      "gridPos": { "h": 5, "w": 6, "x": 6, "y": 0 },
+      "datasource": { "type": "frser-sqlite-datasource", "uid": "netmon-sqlite" },
+      "targets": [
+        {
+          "refId": "A",
+          "queryType": "table",
+          "rawQueryText": "SELECT COUNT(*) AS suspicious FROM ip_reputation WHERE score >= 50"
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "Blocklisted IPs Seen",
+      "gridPos": { "h": 5, "w": 6, "x": 12, "y": 0 },
+      "datasource": { "type": "frser-sqlite-datasource", "uid": "netmon-sqlite" },
+      "targets": [
+        {
+          "refId": "A",
+          "queryType": "table",
+          "rawQueryText": "SELECT COUNT(*) AS blocklisted FROM ip_reputation WHERE blocklisted = 1"
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "Failed Logins (1h)",
+      "gridPos": { "h": 5, "w": 6, "x": 18, "y": 0 },
+      "datasource": { "type": "frser-sqlite-datasource", "uid": "netmon-sqlite" },
+      "targets": [
+        {
+          "refId": "A",
+          "queryType": "table",
+          "rawQueryText": "SELECT COUNT(*) AS failures FROM auth_events WHERE success = 0 AND ts >= strftime('%s','now') - 3600"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Packet Volume",
+      "gridPos": { "h": 9, "w": 12, "x": 0, "y": 5 },
+      "datasource": { "type": "frser-sqlite-datasource", "uid": "netmon-sqlite" },
+      "targets": [
+        {
+          "refId": "A",
+          "queryType": "time series",
+          "timeColumns": ["time"],
+          "rawQueryText": "SELECT CAST(window_start AS INTEGER) * 1000 AS time, packet_count AS packets, unique_sources AS sources FROM traffic_windows ORDER BY window_start"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Alerts Over Time By Type",
+      "gridPos": { "h": 9, "w": 12, "x": 12, "y": 5 },
+      "datasource": { "type": "frser-sqlite-datasource", "uid": "netmon-sqlite" },
+      "targets": [
+        {
+          "refId": "A",
+          "queryType": "time series",
+          "timeColumns": ["time"],
+          "rawQueryText": "SELECT CAST(ts / 300 AS INTEGER) * 300000 AS time, kind, COUNT(*) AS total FROM alerts GROUP BY time, kind ORDER BY time"
+        }
+      ]
+    },
+    {
+      "type": "table",
+      "title": "Top Suspicious IPs",
+      "gridPos": { "h": 9, "w": 12, "x": 0, "y": 14 },
+      "datasource": { "type": "frser-sqlite-datasource", "uid": "netmon-sqlite" },
+      "targets": [
+        {
+          "refId": "A",
+          "queryType": "table",
+          "rawQueryText": "SELECT ip, score, blocklisted, notes, datetime(last_seen,'unixepoch') AS last_seen FROM ip_reputation ORDER BY score DESC LIMIT 25"
+        }
+      ]
+    },
+    {
+      "type": "table",
+      "title": "Recent Alerts",
+      "gridPos": { "h": 9, "w": 12, "x": 12, "y": 14 },
+      "datasource": { "type": "frser-sqlite-datasource", "uid": "netmon-sqlite" },
+      "targets": [
+        {
+          "refId": "A",
+          "queryType": "table",
+          "rawQueryText": "SELECT datetime(ts,'unixepoch') AS time, severity, kind, src_ip, title, detail FROM alerts ORDER BY ts DESC LIMIT 50"
+        }
+      ]
+    }
+  ]
+}
