@@ -19,39 +19,20 @@ The security toolkit
 
 ## Features, and tools
 
-
+### Network Monitor
+### Packet Sniffer
+### Vulnerability Scanner
 
 ## Installation
 
 ```bash
-npm install
-npm run dev
-# http://localhost:3000
+
 ```
 
-Dependencies already declared in `package.json`: `framer-motion`, `tailwind-merge`, `react-icons`, `lucide-react`, `clsx`.
+Dependencies 
 
 ## Project Structure
 
 ```
-cybersec-hub/
-├── components.json           
-├── next.config.mjs
-├── package.json
-├── postcss.config.mjs
-├── tailwind.config.ts
-├── tsconfig.json               
-├── .gitignore
-└── src/
-    ├── app/
-    │   ├── globals.css         
-    │   ├── layout.tsx
-    │   └── page.tsx             
-    ├── components/
-    │   ├── radar-effect-demo.tsx   
-    │   ├── threat-radar.tsx        
-    │   └── ui/
-    │       └── radar-effect.tsx    
-    └── lib/
-        └── utils.ts            
+ 
 ```
