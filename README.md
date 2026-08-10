@@ -30,9 +30,3 @@ The security toolkit
 ```
 
 Dependencies 
-
-## Project Structure
-
-```
- 
-```
