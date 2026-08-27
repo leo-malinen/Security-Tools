@@ -23,10 +23,14 @@ The security toolkit
 ### Packet Sniffer
 ### Vulnerability Scanner
 
-## Installation
+## Installation (for the network monitor)
 
 ```bash
-
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
 ```
 
-Dependencies 
+## Dependencies 
+
+Python 3.14, Powershell, equivalent CLI
