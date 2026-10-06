@@ -4,15 +4,6 @@ A phishing-email detector that runs as a single Tampermonkey/Violentmonkey
 userscript. Public corpora in, a logistic-regression model out, inference in
 plain JS with no network calls.
 
-```
-scripts/fetch_data.ps1    corpora -> data/raw/
-scripts/parse_corpora.py  raw mail -> data/parsed/dataset.jsonl
-scripts/train.py          dataset -> model/model.json
-scripts/parity_test.py    asserts features.py == features.js
-scripts/build_userscript.py  -> dist/phishguard.user.js
-scripts/make_fixture.py   -> dist/fixture.html (browser smoke test)
-```
-
 Run the whole thing with `scripts/run_all.ps1`.
 
 ## Install
@@ -142,16 +133,6 @@ browser than on the bench with no visible error.
   at inference. Worth removing if you only target Gmail.
 - Only a Gmail adapter exists. `collectViews()` in the template is the single
   place to add Outlook/Proton.
-
-## Environment notes
-
-- Avast Web Shield on this machine intercepts TLS and re-signs certificates.
-  Python and curl use their own CA bundles and reject the re-signed chain;
-  PowerShell `Invoke-WebRequest` and git/schannel use the Windows trust store
-  and work. The fetch script therefore uses PowerShell. Nothing about
-  certificate validation is disabled.
-- Avast also kills the download of some phishing corpora mid-stream. Nazario
-  2018, 2020, 2024 and 2025 failed every retry. To get them, add a folder
   exclusion for `data/raw/` in Avast (Menu > Settings > Exceptions) and re-run
   `fetch_data.ps1`; 2024 and 2025 are the most current phishing available and
   are worth having.
