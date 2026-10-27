@@ -22,6 +22,7 @@ The security toolkit
 ### Network Monitor
 ### Packet Sniffer
 ### Vulnerability Scanner
+### Phishing Guard (Coming Soon)
 
 ## Installation (for the network monitor)
 
